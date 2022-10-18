@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图书馆预约管理系统</title>
+<link rel="stylesheet" type="text/css" th:href="@{/moban/css/index.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/moban/css/animate-custom.css}" />
+	<script th:src="@{/moban/js/main.js}"></script>
+	<script th:src="@{/moban/js/jquery-1.7.2.min.js}"></script>
+</head>
+<body style="background: #fff url(/moban/images/bg.jpg) repeat top left;">
+
+<div id="container_demo" >
+	<a class="hiddenanchor" id="toregister"></a>
+	<a class="hiddenanchor" id="tologin"></a>
+	<div id="wrapper">
+		<div id="login" class="animate form" >
+			<form  action="/user/login" autocomplete="on" method="post">
+				<h1>登录</h1> 
+				<p> 
+					<label for="username" class="uname" data-icon="u" >您的用户名</label>
+					<input id="username" name="name" required="required" type="text" placeholder="请输入用户名"/>
+				</p>
+				<p> 
+					<label for="password" class="youpasswd" data-icon="p">你的密码</label>
+					<input id="password" name="password" required="required" type="password" placeholder="请输入密码" />
+				</p>
+				<p> 
+					<span style="color: red;font-size: 18px" th:text="${msg}"></span>
+				</p>
+				<p class="login button"> 
+					<input type="submit" value="登录" /> 
+				</p>
+				<p class="change_link">
+					不是成员?<a href="#toregister" class="to_register">加入我们</a>
+				</p>
+			</form>
+		</div>
+
+		<div id="register" class="animate form">
+			<form  action="/user/user-save" autocomplete="on" method="post">
+				<h1>注册</h1> 
+				<p> 
+					<label for="usernamesignup" class="uname" data-icon="u">用户名</label>
+					<input id="usernamesignup" name="name" required="required" type="text" placeholder="用户名" />
+				</p>
+				<p> 
+					<label for="tel" class="youmail">联系电话</label>
+					<input id="tel" name="phone" required="required" type="tel" placeholder="联系电话"/>
+				</p>
+				<p> 
+					<label for="academy" class="youmail">座牌号码</label>
+					<input id="academy" name="plate_num" required="required" type="text" placeholder="座牌号码" id="plate_num"/>
+				</p>
+				<p> 
+					<label for="passwordsignup" class="youpasswd" data-icon="p">密码</label>
+					<input id="passwordsignup" name="password" required="required" type="password" placeholder="密码"/>
+				</p>
+				<p class="signin button"> 
+					<input type="submit" value="注册" id="zhuce"/>
+				</p>
+				<p class="change_link">  
+					已经是成员?<a href="#tologin" class="to_register"> 去登录 </a>
+				</p>
+			</form>
+		</div>
+		
+	</div>
+	
+</div>
+<script>
+
+	$(document).ready(function(){
+		$(":submit[id=zhuce]").click(function(check){
+			var val = $(":text[id=plate_num]").val();
+			if(val==""){
+				alert("文本框输入为空，不能提交表单！");
+				$(":text[id=test]").focus();
+				check.preventDefault();//此处阻止提交表单
+			}else{
+				var reg01 =
+						/^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/;
+				if (reg01.test(val)) {
+					alert("学生号正确");
+				} else {
+					alert("请填写正确的学生号");
+					check.preventDefault();//此处阻止提交表单
+					return;
+
+				}
+
+			}
+		});
+	});
+</script>
+</body>
+</html>

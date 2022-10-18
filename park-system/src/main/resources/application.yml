@@ -1,0 +1,20 @@
+#数据库连接
+spring: 
+    thymeleaf: 
+        cache: false
+        prefix: classpath:/templates/
+        suffix: .html
+        encoding: UTF-8
+        content-type: text/html
+        mode: LEGACYHTML5
+    datasource:
+#        url: jdbc:mysql://localhost:3306/park?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Hongkong
+        url: jdbc:mysql://localhost:3306/park?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Hongkong
+        username: root
+        password: 112233
+        com.mysql.jdbc.Driver: com.mysql.jdbc.Driver
+
+#服务器端口
+server: 
+  port: 8088
+  

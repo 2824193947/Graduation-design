@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/moban/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/moban/css/table.css}"/>
+	<script th:src="@{/moban/js/jquery-1.11.2.min.js}"></script>
+	<script th:src="@{/moban/js/main.js}"></script>
+	<title>我的订单</title>
+</head>
+<style>
+	.help-main p {
+		line-height: 50px;
+	}
+</style>
+<body >
+
+<span th:replace="/common/head2 :: header"></span>
+
+<div class="help-wrap">
+	<div class="container clearfix">
+		<div class="bread">当前位置：
+			<a href="#">首页</a> >
+			<a href="#">订单管理</a> >
+			<a href="#">我的订单</a>
+		</div>
+		<span th:replace="/common/userinfo :: userer"></span>
+		<div class="help-r fr">
+			<div class="help-item-title">预约记录</div>
+
+			<div class="help-main">
+				<table class="table table-hover" th:if="${orderList}">
+				<thead>
+					<tr >
+			        <th>订单编号</th>
+			        <th>下单时间</th>
+			        <th>座位号</th>
+						<th>图书馆名称</th>
+			        <th>座位编号</th>
+			        <th>座位价格</th>
+			        <th>应付金额</th>
+			        <th>状态</th>
+			        <th>操作</th>
+			      </tr>
+			      <tr>
+			        
+			      <tr th:each="order,orderStat : ${orderList}">
+						<input type="hidden" th:value="${order.id}" class="inp"/>
+				      <td th:text="${order.code}"></td>
+				      <td th:text="${#calendars.format(order.createDate,'yyyy-MM-dd')}"></td>
+				      <td th:text="${order.plate_num}"></td>
+						<td th:text="${order.parkingLot_name}"></td>
+				      <td th:text="${order.park_name}"></td>
+				      <td th:text="${order.price}"></td>
+				      <td th:text="${order.total}"></td>
+						<input id="message" type="hidden" th:value="${session.message}" />
+				      <td>
+				      	<span th:if="${order.status==0}" style="color: red">待付款</span>
+				      	<span th:if="${order.status==1}" style="color: green;">订单完成</span>
+				      </td>
+				      <td>
+				      	<a th:if="${order.status==0}"  th:href="@{'/order/jiesuan?id='+${order.id}}">结算</a>
+				      	<a th:if="${order.status==1}"  th:href="@{'/order/delOrder?id='+${order.id}}">删除</a>
+<!--						  <a th:if="${order.status==1}" title="删除" href="javascript:;" onclick="car_del(this)"-->
+<!--							 class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>-->
+				      </td>
+			        </tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<span th:replace="/common/foot :: footer"></span>
+</body>
+<span th:include="/common/on-load-js :: commonOnLoadJs"></span>
+<script>
+		trace();
+	function trace(){
+		var message = document.getElementById('message').value;
+		if(message&&message!=''){
+			alert(message);
+		}
+	}
+		function car_del(obj){
+			layer.confirm('确认要删除吗？',function(index){
+				var orderId = $(obj).parents("tr").find(".inp").val();
+				$.ajax({
+					type: 'POST',
+					url: '/order/delOrder',
+					data:{"order":orderId},
+					dataType: 'json',
+					success: function(data){
+						if(data.res==0){
+							$(obj).parents("tr").remove();
+							layer.msg('已删除!',{icon:1,time:1000});
+						}else{
+							layer.msg('操作失败!',{icon: 2,time:1000});
+						}
+					}
+				});
+			});
+		}
+
+</script>
+</html>
